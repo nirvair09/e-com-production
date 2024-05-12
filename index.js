@@ -7,6 +7,7 @@ const connectDatabase = require("./config/database");
 const cloudinary = require("cloudinary");
 const path = require("path");
 const errorMiddleware = require("./middleware/error");
+const cors = require("cors"); 
 
 const app = express();
 dotenv.config();
@@ -21,6 +22,8 @@ const auth = require("./routes/auth");
 const products = require("./routes/product");
 const payment = require("./routes/payment");
 const order = require("./routes/order");
+
+app.use(cors());
 
 app.use("/api/v1", auth);
 app.use("/api/v1", products);
