@@ -7,7 +7,6 @@ const connectDatabase = require("./config/database");
 const cloudinary = require("cloudinary");
 const path = require("path");
 const errorMiddleware = require("./middleware/error");
-const cors = require("cors"); 
 
 const app = express();
 dotenv.config();
@@ -17,13 +16,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(fileUpload());
 
-// import all routes
+// Import CORS middleware
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://e-com-production-vmte.onrender.com');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
+// Import all routes
 const auth = require("./routes/auth");
 const products = require("./routes/product");
 const payment = require("./routes/payment");
 const order = require("./routes/order");
-
-app.use(cors());
 
 app.use("/api/v1", auth);
 app.use("/api/v1", products);
@@ -36,7 +41,7 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "/client/build", "index.html"));
 });
 
-// connecting to database
+// Connecting to database
 connectDatabase();
 
 // Setting up cloudinary configuration
@@ -50,7 +55,7 @@ app.use("/", (req, res) => {
     res.send("App is running.");
 });
 
-// Middleware to handle error
+// Middleware to handle errors
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 5000;
