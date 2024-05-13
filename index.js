@@ -16,13 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(fileUpload());
 
-// Import CORS middleware
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://e-com-production-vmte.onrender.com');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
 
 // Import all routes
 const auth = require("./routes/auth");
